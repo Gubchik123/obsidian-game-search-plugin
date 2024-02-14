@@ -2,7 +2,7 @@
 _Easily create game notes._
 
 ![GitHub release](https://img.shields.io/github/v/release/Gubchik123/obsidian-game-search-plugin?sort=semver)
-[![GitHub pages](https://github.com/Gubchik123/obsidian-game-search-plugin/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Gubchik123/obsidian-game-search-plugin/actions/workflows/pages/pages-build-deployment)
+[![GitHub Pages](https://github.com/Gubchik123/obsidian-game-search-plugin/actions/workflows/pages/pages-build-deployment/badge.svg?branch=master)](https://github.com/Gubchik123/obsidian-game-search-plugin/actions/workflows/pages/pages-build-deployment)
 
 <br>
 
