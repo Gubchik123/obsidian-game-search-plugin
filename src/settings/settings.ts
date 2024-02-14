@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, Setting, Notice } from "obsidian";
+import { App, PluginSettingTab, Setting } from "obsidian";
 
 import { ServiceProvider } from "@src/constants";
 
@@ -14,7 +14,6 @@ export enum DefaultFrontmatterKeyType {
 
 export interface GameSearchPluginSettings {
 	folder: string; // new file location
-	file_name_format: string; // new file name format
 	template_file: string;
 	open_page_on_completion: boolean;
 	service_provider: ServiceProvider;
@@ -30,7 +29,6 @@ export interface GameSearchPluginSettings {
 
 export const DEFAULT_SETTINGS: GameSearchPluginSettings = {
 	folder: "",
-	file_name_format: "{{name}}",
 	template_file: "",
 	open_page_on_completion: true,
 	service_provider: ServiceProvider.rawg,
@@ -57,13 +55,10 @@ export class GameSearchSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 
 		containerEl.empty();
-
 		containerEl.classList.add("game-search-plugin__settings");
-
-		createHeader(containerEl, "General Settings");
-
+		// General Settings
 		new Setting(containerEl)
-			.setName("New file location")
+			.setName("New File Location")
 			.setDesc("New game notes will be placed here.")
 			.addSearch(cb => {
 				try {
@@ -78,9 +73,8 @@ export class GameSearchSettingTab extends PluginSettingTab {
 						this.plugin.saveSettings();
 					});
 			});
-
 		new Setting(containerEl)
-			.setName("Template file")
+			.setName("Template File")
 			.setDesc("Files will be available as templates.")
 			.addSearch(cb => {
 				try {
@@ -95,9 +89,8 @@ export class GameSearchSettingTab extends PluginSettingTab {
 						this.plugin.saveSettings();
 					});
 			});
-
 		new Setting(containerEl)
-			.setName("Open new game note")
+			.setName("Open New Game Note")
 			.setDesc("Enable or disable the automatic opening of the note on creation.")
 			.addToggle(toggle =>
 				toggle.setValue(this.plugin.settings.open_page_on_completion).onChange(async value => {
@@ -105,7 +98,6 @@ export class GameSearchSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}),
 			);
-
 		new Setting(containerEl)
 			.setName("Service Provider")
 			.setDesc("Choose the service provider you want to use to search your game.")
@@ -119,29 +111,21 @@ export class GameSearchSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				});
 			});
-
-		const APISettingsChildren: Setting[] = [];
-		createHeader(containerEl, "RAWG API Settings");
-		let temp_key_value = "";
-		APISettingsChildren.push(
+		// API Settings
+		const APISettings: Setting[] = [];
+		APISettings.push(
 			new Setting(containerEl)
-				.setName("RAWG API Key")
+				.setName("API Key")
 				.setDesc("WARNING: It is not 'Bearer' JSON Web Token (JWT).")
 				.addText(text => {
 					text.inputEl.type = "password";
 					text.setValue(this.plugin.settings.api_key).onChange(async value => {
-						temp_key_value = value;
-					});
-				})
-				.addButton(button => {
-					button.setButtonText("Save Key").onClick(async () => {
-						this.plugin.settings.api_key = temp_key_value;
+						this.plugin.settings.api_key = value;
 						await this.plugin.saveSettings();
-						new Notice("API key saved!");
 					});
 				}),
 		);
-        APISettingsChildren.push(
+		APISettings.push(
 			new Setting(containerEl)
 				.setName("Search Precise")
 				.setDesc("Enable or disable fuzziness for the search query.")
@@ -152,7 +136,7 @@ export class GameSearchSettingTab extends PluginSettingTab {
 					}),
 				),
 		);
-        APISettingsChildren.push(
+		APISettings.push(
 			new Setting(containerEl)
 				.setName("Search Exact")
 				.setDesc("Mark the search query as exact.")
@@ -164,10 +148,4 @@ export class GameSearchSettingTab extends PluginSettingTab {
 				),
 		);
 	}
-}
-
-function createHeader(container_element: HTMLElement, name: string) {
-	const name_element = document.createDocumentFragment();
-	name_element.createEl("h2", { text: name });
-	return new Setting(container_element).setHeading().setName(name_element);
 }

@@ -1,3 +1,4 @@
+import { parseYaml } from "obsidian";
 import { Game, Frontmatter } from "@models/game.model";
 import { DefaultFrontmatterKeyType } from "@settings/settings";
 
@@ -9,14 +10,8 @@ export function replace_illegal_file_name_characters_in_(text: string) {
 	return text.replace(/[\\,#%&{}/*<>$":@.?]/g, "").replace(/\s+/g, " ");
 }
 
-export function make_file_name_for_(game: Game, file_name_format?: string) {
-	let result: string;
-	if (file_name_format) {
-		result = replace_variable_syntax(game, replace_date_in_(file_name_format));
-	} else {
-		result = game.name;
-	}
-	return replace_illegal_file_name_characters_in_(result) + ".md";
+export function make_file_name_for_(game: Game) {
+	return replace_illegal_file_name_characters_in_(game.name) + ".md";
 }
 
 export function change_snake_case(game: Game) {
@@ -32,7 +27,7 @@ export function apply_default_frontmatter(
 	key_type: DefaultFrontmatterKeyType = DefaultFrontmatterKeyType.snake_case,
 ) {
 	const _frontmatter = key_type === DefaultFrontmatterKeyType.camel_case ? game : change_snake_case(game);
-	const extra_front_matter = typeof frontmatter === "string" ? parse_(frontmatter) : frontmatter;
+	const extra_front_matter = typeof frontmatter === "string" ? parseYaml(frontmatter) : frontmatter;
 
 	for (const key in extra_front_matter) {
 		const value = extra_front_matter[key]?.toString().trim() ?? "";
@@ -58,44 +53,8 @@ export function camel_to_snake_case(str: string) {
 	return str.replace(/[A-Z]/g, letter => `_${letter?.toLowerCase()}`);
 }
 
-export function parse_(frontmatter: string) {
-	if (!frontmatter) return {};
-	return frontmatter
-		.split("\n")
-		.map(item => {
-			const index = item.indexOf(":");
-			if (index === -1) return [item.trim(), ""];
-
-			const key = item.slice(0, index)?.trim();
-			const value = item.slice(index + 1)?.trim();
-			return [key, value];
-		})
-		.reduce((acc, [key, value]) => {
-			if (key) {
-				acc[key] = value?.trim() ?? "";
-			}
-			return acc;
-		}, {});
-}
-
-export function to_string_(frontmatter: object): string {
-	return Object.entries(frontmatter)
-		.map(([key, value]) => {
-			const new_value = value?.toString().trim() ?? "";
-			if (/\r|\n/.test(new_value)) {
-				return "";
-			}
-			if (/:\s/.test(new_value)) {
-				return `${key}: "${new_value.replace(/"/g, "&quot;")}"\n`;
-			}
-			return `${key}: ${new_value}\n`;
-		})
-		.join("")
-		.trim();
-}
-
 export function getDate(input?: { format?: string; offset?: number }) {
-	let duration;
+	let duration: moment.Duration;
 
 	if (input?.offset !== null && input?.offset !== undefined && typeof input.offset === "number")
 		duration = window.moment.duration(input.offset, "days");
@@ -119,7 +78,6 @@ export function replace_date_in_(input: string) {
 		}
 		output = replacer(output, DATE_REGEX, getDate({ offset }));
 	}
-
 	while (DATE_REGEX_FORMATTED.test(output)) {
 		const date_match = DATE_REGEX_FORMATTED.exec(output);
 		const format = date_match?.[1];
@@ -135,7 +93,7 @@ export function replace_date_in_(input: string) {
 	return output;
 }
 
-function replacer(str: string, reg: RegExp, replace_value) {
+function replacer(str: string, reg: RegExp, replace_value: string) {
 	return str.replace(reg, function () {
 		return replace_value;
 	});

@@ -1,4 +1,4 @@
-import { MarkdownView, Notice, Plugin, TFile } from "obsidian";
+import { Editor, MarkdownView, Notice, Plugin, TFile, stringifyYaml } from "obsidian";
 
 import { GameSearchModal } from "@views/game_search_modal";
 import { GameSuggestModal } from "@views/game_suggest_modal";
@@ -15,7 +15,7 @@ import {
 	use_templater_plugin_in_file,
 	execute_inline_scripts_template,
 } from "@utils/template";
-import { replace_variable_syntax, make_file_name_for_, apply_default_frontmatter, to_string_ } from "@utils/utils";
+import { replace_variable_syntax, make_file_name_for_, apply_default_frontmatter } from "@utils/utils";
 
 export default class GameSearchPlugin extends Plugin {
 	settings: GameSearchPluginSettings;
@@ -27,18 +27,16 @@ export default class GameSearchPlugin extends Plugin {
 			this.create_new_game_note(),
 		);
 		ribbon_icon_element.addClass("obsidian-game-search-plugin-ribbon-class");
-
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
 			id: "open-game-search-modal",
 			name: "Create new game note",
 			callback: () => this.create_new_game_note(),
 		});
-
 		this.addCommand({
 			id: "open-game-search-modal-to-insert",
 			name: "Insert a game data",
-			callback: () => this.insert_data(),
+			editorCallback: (editor: Editor, view: MarkdownView) => this.insert_data(editor, view.file.basename),
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
@@ -77,7 +75,7 @@ export default class GameSearchPlugin extends Plugin {
 
 		let replaced_variable_frontmatter = replace_variable_syntax(game, frontmatter); // @deprecated
 		if (use_default_frontmatter)
-			replaced_variable_frontmatter = to_string_(
+			replaced_variable_frontmatter = stringifyYaml(
 				apply_default_frontmatter(game, replaced_variable_frontmatter, default_frontmatter_key_type),
 			);
 		const replaced_variable_content = replace_variable_syntax(game, content);
@@ -87,21 +85,11 @@ export default class GameSearchPlugin extends Plugin {
 			: replaced_variable_content;
 	}
 
-	async insert_data(): Promise<void> {
+	async insert_data(editor: Editor, file_basename: string): Promise<void> {
 		try {
-			const markdown_view = this.app.workspace.getActiveViewOfType(MarkdownView);
-			if (!markdown_view) {
-				console.warn("Can not find an active markdown view");
-				return;
-			}
-			const game = await this.search_game_data(markdown_view.file.basename);
-
-			if (!markdown_view.editor) {
-				console.warn("Can not find editor from the active markdown view");
-				return;
-			}
+			const game = await this.search_game_data(file_basename);
 			const rendered_contents = await this.get_rendered_contents(game);
-			markdown_view.editor.replaceRange(rendered_contents, { line: 0, ch: 0 });
+			editor.replaceRange(rendered_contents, { line: 0, ch: 0 });
 		} catch (err) {
 			console.warn(err);
 			this.show_notice(err);
@@ -112,9 +100,8 @@ export default class GameSearchPlugin extends Plugin {
 		try {
 			const game = await this.search_game_data();
 			const rendered_contents = await this.get_rendered_contents(game);
-
 			// create new File
-			const file_name = make_file_name_for_(game, this.settings.file_name_format);
+			const file_name = make_file_name_for_(game);
 			const file_path = `${this.settings.folder}/${file_name}`;
 			const target_file = await this.app.vault.create(file_path, rendered_contents);
 
@@ -128,7 +115,6 @@ export default class GameSearchPlugin extends Plugin {
 
 	async open_new_game_note(target_file: TFile) {
 		if (!this.settings.open_page_on_completion) return;
-
 		// open file
 		const active_leaf = this.app.workspace.getLeaf();
 		if (!active_leaf) {
