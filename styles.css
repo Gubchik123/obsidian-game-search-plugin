@@ -1,8 +1,29 @@
-/*
+.game-search-plugin__settings .search-input-container {
+	width: 100%;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.game-search-plugin__settings--new_file_name {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+.game-search-plugin__settings--new_file_name_hint {
+	margin-bottom: 20px;
+}
+.game-search-plugin__settings--service_provider .dropdown {
+	text-transform: capitalize;
+}
 
-If your plugin does not need CSS, delete this file.
+.game-search-plugin__hide {
+	display: none;
+}
 
-*/
+.game-search-plugin__show {
+	display: flex;
+}
+
+.game-search-plugin__search-modal--input {
+	padding-bottom: 18px;
+}
+.game-search-plugin__search-modal--input input {
+	width: 100%;
+}
