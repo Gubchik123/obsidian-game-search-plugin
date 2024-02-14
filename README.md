@@ -1,96 +1,290 @@
-# Obsidian Sample Plugin
+![Header image](./md_images/header.png)
+_Easily create game notes._
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+![GitHub release](https://img.shields.io/github/v/release/Gubchik123/obsidian-game-search-plugin?sort=semver)
+[![GitHub pages](https://github.com/Gubchik123/obsidian-game-search-plugin/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Gubchik123/obsidian-game-search-plugin/actions/workflows/pages/pages-build-deployment)
 
-This project uses Typescript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definition format, which contains TSDoc comments describing what it does.
+<br>
 
-**Note:** The Obsidian API is still in early alpha and is subject to change at any time!
+## Features
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+-   Flow:
+    -   Create a new game note.
+    -   Search for game by keywords.
+    -   Select the game from the search results.
+    -   Get the game information immediately in the Obsidian note.
+-   Settings:
+    -   Set the folder location where the new file is created.
+    -   Set the template file location.
+    -   Set up the services that you use to search for game.
+-   Third-party plugins integration:
+    -   Use the [Dataview plugin](https://obsidian.md/plugins?id=dataview) to render the game notes.
+    -   Use the [Templater plugin](https://github.com/SilentVoid13/Templater) with.
+-   Advanced:
+    -   Enables [Inline scripts](#inline-script) for templates.
 
-## First time developing plugins?
+<br>
 
-Quick starting guide for new plugin devs:
+## How to install
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+### From Community Plugins
 
-## Releasing new releases
+Click the link to install the Game Search plugin: [Install Link](https://obsidian.md/plugins?id=game-search)
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+**OR**
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+Search in the Obsidian Community plugin. And install it.
 
-## Adding your plugin to the community plugin list
+<p align="center"><img src="./md_images/install.png" alt="Install image"/></p>
 
-- Check https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+### Manually (from GitHub)
+
+1. Clone the repository to your Obsidian plugins folder.
+
+```bash
+git clone https://github.com/Gubchik123/obsidian-game-search-plugin.git
+```
+
+2. Install the dependencies.
+
+```bash
+yarn install
+```
+
+3. Build the plugin.
+
+```bash
+yarn build
+```
+
+4. Reload Obsidian and enable the plugin in the settings.
+
+<br>
 
 ## How to use
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+### 1. Click the ribbon icon (dice), or execute the command "Create new game note".
 
-## Manually installing the plugin
+<p align="center"><img src="./md_images/use/1.png" alt="1 step image"/></p>
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+### 2. Search for game by keywords.
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
+<p align="center"><img src="./md_images/use/2.png" alt="2 step image"/></p>
 
-## Funding URL
+### 3. Select the game from the search results.
 
-You can include funding URLs where people who use your plugin can financially support it.
+<p align="center"><img src="./md_images/use/3.png" alt="3 step image"/></p>
 
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+### 4. Voila! A note has been created.
 
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+<p align="center"><img src="./md_images/use/4.png" alt="4 step image"/></p>
+
+<br>
+
+## How to use settings
+
+<p align="center"><img src="./md_images/settings.png" alt="Settings image"/></p>
+
+### New file location
+
+Set the folder location where the new file is created. Otherwise, a new file is created in the Obsidian Root folder.
+
+### Template file
+
+You can set the template file location. There is an example template at the bottom.
+
+### Open new game note
+
+Enable or disable the opening of the new game note after creation.
+
+### Service Provider
+
+You can set up the services that you use to search for game. Only RAWG are available now.
+
+#### RAWG API Settings
+
+##### RAWG API Key
+
+Set the API key for RAWG.
+
+> You can get an API key from [RAWG](https://developer.thegamedb.org/v3/reference/intro/authentication#api-key-quick-start).
+
+> 🚧 **WARNING**
+>
+> API key is not 'Bearer' JSON Web Token (JWT).
+
+##### Search precise
+
+Enable or disable fuzziness for the search.
+
+##### Search exact
+
+Mark the search as exact.
+
+<br>
+
+## Example template
+
+Personally I use the following template to create game notes ;)
+
+> Please also find a definition of the variables used in this template below (look at: [Template variables definitions](#template-variables-definitions)).
+
+```markdown
+---
+created: "{{date: DD.MM.YYYY}} {{time: HH:mm}}"
+tags:
+    - Entertainment
+    - Game
+status: TO PLAY
+cover:: "{{background_image}}"
+---
+
+## 🎮 Game Review -> {{name}}
+
+![Game Cover]({{background_image}})
+
+### ❓ Information
+
+Title:: {{name}}
+Release-date:: {{released}}
+Rating:: {{rating}}
+Genres:: {{genres}}
+Tags:: {{tags}}
+Parent-platforms:: {{parent_platforms}}
+Stores:: {{stores}}
+
+#### Screenshots
+
+<%=game.short_screenshots.map(screenshot => `![Screenshot](${screenshot})`).join("\n")%>
+
+#### Clip
+
+![Clip]({{clip}})
+
+#### Simple quiz
+
+1. Player Bases 1. [ ] Kids 2. [ ] Everyone
+   ...
+   ...
+2. Score:: 0
 ```
 
-If you have multiple URLs, you can also do:
+> The idea of the template was taken from the [OB_Template](https://github.com/llZektorll/OB_Template/blob/main/0A_Templates/0A_8_Reviews/0A_8_1_GameReview.md). Look through the repository for more examples.
 
+<br>
+
+## Dataview rendering
+
+<p align="center"><img src="./md_images/dataview.png" alt="Dataview image"/></p>
+
+Here is the dataview query used in the demo
+
+### List of played games
+
+````
+```dataview
+TABLE WITHOUT ID
+	"![|200](" + cover + ")" as Cover,
+	link(file.link, Title) as Title,
+	Release-date as "Released at",
+	Genres,
+	round(Rating + 5, 2) + " / 10" as Rating,
+	Score + " / 10" as "My rating"
+FROM  "My/Entertainments/Games" AND #Game
+WHERE status = "PLAYED"
+SORT Score DESC, Rating DESC, Title ASC
+```
+````
+
+### List of games to play
+
+````
+```dataview
+TABLE WITHOUT ID
+	"![|200](" + cover + ")" as Cover,
+	link(file.link, Title) as Title,
+	Release-date as "Released at",
+	Genres,
+	Rating + " / 5" as Rating
+FROM  "My/Entertainments/Games" AND #Game
+WHERE status = "TO PLAY"
+SORT Score DESC, Rating DESC, Title ASC
+```
+````
+
+<br>
+
+## Template variables definitions
+
+Please find here a definition of the possible variables to be used in your template. Simply write `{{name}}` in your template, and replace name by the desired game data, including:
+
+| name              | type             | description                                    |
+| ----------------- | ---------------- | ---------------------------------------------- |
+| name              | string           | The name of the game.                          |
+| released          | string           | The release date of the game.                  |
+| background_image  | string           | The cover image URL of the game.               |
+| rating            | float            | The average vote of the game.                  |
+| parent_platforms  | array of strings | The parent platforms of the game.              |
+| genres            | array of strings | The genres of the game.                        |
+| stores            | array of strings | The stores of the game.                        |
+| clip              | string           | The clip URL of the game.                      |
+| tags              | array of strings | The tags of the game.                          |
+| short_screenshots | array of strings | The URLs of the short screenshots of the game. |
+
+<br>
+
+## Advanced
+
+### Inline Script
+
+#### To print out a game object:
+
+````
 ```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+<%=game%>
+```
+````
+
+or
+
+````
+```json
+<%=JSON.stringify(game, null, 2)%>
+```
+````
+
+#### When you want to list of tags:
+
+```
+---
+Tags: <%=game.tags.map(tag_name =>`\n  - ${tag_name}`).join('')%>
+---
+
+Tags: <%=game.tags.map(tag_name => `[[Tag/${tag_name}]]`).join(', ')%>
 ```
 
-## API Documentation
+<br>
 
-See https://github.com/obsidianmd/obsidian-api
+## License
+
+[Obsidian Game Search Plugin](https://github.com/Gubchik123/obsidian-game-search-plugin) is licensed under the [MIT License](https://github.com/Gubchik123/obsidian-game-search-plugin/blob/master/LICENSE.md).
+
+<br>
+
+## Contributing
+
+Feel free to contribute.
+
+You can create an [issue](https://github.com/Gubchik123/obsidian-game-search-plugin/issues/new) to report a bug, suggest an improvement for this plugin, ask a question, etc.
+
+You can make a [pull request](https://github.com/Gubchik123/obsidian-game-search-plugin/compare) to contribute to this plugin development.
+
+<br>
+
+## Support
+
+If this plugin helped you and you wish to contribute :)
+
+Buy me coffee on [buymeacoffee.com/Gubchik123](https://www.buymeacoffee.com/Gubchik123)
+
+<a href="https://www.buymeacoffee.com/Gubchik123" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="60"></a>
