@@ -1,6 +1,6 @@
 {
 	"version": "1.0.0",
-	"name": "game-search",
+	"name": "rawg-game-search",
 	"description": "This is a plugin to help you create game notes.",
 	"homepage": "https://github.com/Gubchik123/obsidian-game-search-plugin/",
 	"main": "main.js",

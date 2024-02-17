@@ -3,7 +3,7 @@
 	"name": "Game Search",
 	"isDesktopOnly": false,
 	"minAppVersion": "0.15.0",
-	"id": "game-search",
+	"id": "rawg-game-search",
 	"description": "Helps you find game and create notes.",
 	"author": "Gubchik123",
 	"authorUrl": "https://nikita-hubariev.me",
